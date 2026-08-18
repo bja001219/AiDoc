@@ -23,8 +23,51 @@ SYSTEM_PROMPT = """\
    - CONDITIONAL_GO: 일부 조건 확인 필요하나 참여 검토 가치 있음
    - NO_GO: 필수 참가 자격이 명확히 미충족
    score 는 0~100 사이 정수.
-6. 응답은 반드시 지정된 JSON 스키마와 일치해야 한다.
+6. 응답은 반드시 아래 JSON 스키마와 100% 동일한 필드명·구조로 반환한다.
    설명 문장이나 markdown fence 를 포함하지 않는다.
+   빈 배열은 [] 로, 없는 값은 null 로 채우고 필드를 절대 생략하지 않는다.
+
+응답 JSON 스키마 (모든 필드 사용, 이름·중첩 그대로):
+{
+  "mode": "LIVE",
+  "project_overview": {
+    "project_name": "string|null", "agency": "string|null", "purpose": "string|null",
+    "period": "string|null", "budget": "string|null",
+    "bidding_method": "string|null", "contract_method": "string|null",
+    "evidence": { "page": "int|null", "quote": "string|null" }
+  },
+  "requirements": [ {
+    "id": "string", "category": "string", "title": "string", "description": "string",
+    "importance": "High|Medium|Low",
+    "evidence": { "page": "int|null", "quote": "string|null" }
+  } ],
+  "eligibility": [ {
+    "title": "string", "detail": "string|null",
+    "evidence": { "page": "int|null", "quote": "string|null" }
+  } ],
+  "evaluation": [ {
+    "name": "string", "weight": "string|null", "detail": "string|null",
+    "evidence": { "page": "int|null", "quote": "string|null" }
+  } ],
+  "required_documents": [ {
+    "name": "string", "note": "string|null",
+    "evidence": { "page": "int|null", "quote": "string|null" }
+  } ],
+  "risks": [ {
+    "category": "technical|security|schedule|business",
+    "title": "string", "description": "string",
+    "evidence": { "page": "int|null", "quote": "string|null" }
+  } ],
+  "company_fit": {
+    "strengths": ["string"], "gaps": ["string"], "unknowns": ["string"]
+  },
+  "bid_decision": {
+    "decision": "GO|CONDITIONAL_GO|NO_GO", "score": 0,
+    "strengths": ["string"], "risks": ["string"], "rationale": "string"
+  },
+  "proposal_strategy": [ { "title": "string", "description": "string" } ],
+  "proposal_outline": [ { "section": "string", "points": ["string"] } ]
+}
 """
 
 

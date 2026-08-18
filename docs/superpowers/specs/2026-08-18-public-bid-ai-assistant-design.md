@@ -286,7 +286,7 @@ Desktop-first. Tailwind CSS 사용. 과도한 애니메이션 없음.
 
 - **Gemini (기본)**
   - `google-genai` SDK (`from google import genai`)
-  - 기본 모델: `GEMINI_MODEL` (기본값 `gemini-2.0-flash`)
+  - 기본 모델: `GEMINI_MODEL` (기본값 `gemini-3.6-flash`)
   - `client.models.generate_content(config={"response_mime_type":"application/json", ...})`
   - 응답 `.text`를 파싱 → Pydantic 검증
 - **OpenAI (선택)**

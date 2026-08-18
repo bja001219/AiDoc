@@ -161,7 +161,7 @@ MOCK_MODE=true
 MOCK_MODE=false
 LLM_PROVIDER=gemini
 GEMINI_API_KEY=AIza...
-GEMINI_MODEL=gemini-2.0-flash    # 무료 티어에서 사용 가능한 모델
+GEMINI_MODEL=gemini-3.6-flash    # 무료 티어에서 사용 가능한 모델 (2026-08 기준)
 ```
 
 ### B. OpenAI (유료)

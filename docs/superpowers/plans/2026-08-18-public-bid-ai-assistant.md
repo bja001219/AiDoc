@@ -608,7 +608,9 @@ DONE (브라우저 육안 확인만 다음 세션 대상)
 - [x] 분석 결과 JSON 다운로드 (Blob) 검증
 - [x] LLM 프로바이더 factory 분기 (mock/gemini/openai + 키 없을 때 mock 폴백)
 - [x] README만 보고 setup/run 가능 (Gemini 무료 티어 안내 포함)
-- [ ] Live Gemini analysis — 사용자 환경에서 GEMINI_API_KEY 설정 후 수행
+- [x] Live Gemini analysis — 사용자 키(`gemini-3.6-flash`)로 end-to-end 확인 완료.
+      실제 PDF 업로드 → `/api/analyze` → 200, `mode:LIVE`, `decision:CONDITIONAL_GO`,
+      `score`/`rationale`/`company_fit` 모두 정상 채워짐 (2026-08-18)
 - [ ] Live OpenAI analysis — 미수행 (키 없음)
 - [ ] 브라우저 육안 QA — 다음 세션 사용자 환경에서 수행 권장
 

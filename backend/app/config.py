@@ -83,7 +83,7 @@ def get_settings() -> Settings:
         openai_api_key=os.getenv("OPENAI_API_KEY") or None,
         openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         gemini_api_key=os.getenv("GEMINI_API_KEY") or None,
-        gemini_model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash"),
+        gemini_model=os.getenv("GEMINI_MODEL", "gemini-3.6-flash"),
         mock_mode=_get_bool("MOCK_MODE", True),
         max_pdf_bytes=_get_int("MAX_PDF_BYTES", 25 * 1024 * 1024),
         cors_allow_origins=_get_list("CORS_ALLOW_ORIGINS", ["http://localhost:5173"]),
