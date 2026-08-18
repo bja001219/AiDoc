@@ -65,7 +65,34 @@ class Settings:
 
     @property
     def mode(self) -> str:
+        """What the user configured via MOCK_MODE.
+
+        Not necessarily what will actually run — see `effective_mode`.
+        """
         return "MOCK" if self.mock_mode else "LIVE"
+
+    @property
+    def has_live_credentials(self) -> bool:
+        """Whether the configured provider actually has a usable key."""
+        if self.llm_provider == "gemini":
+            return bool(self.gemini_api_key)
+        if self.llm_provider == "openai":
+            return bool(self.openai_api_key)
+        return False
+
+    @property
+    def effective_mode(self) -> str:
+        """What analyzer_factory will actually serve.
+
+        Returns "MOCK" whenever mock_mode is true OR the configured live
+        provider has no key. This is the value the UI should display so
+        the operator can tell a real live run from a silent fallback.
+        """
+        if self.mock_mode:
+            return "MOCK"
+        if not self.has_live_credentials:
+            return "MOCK"
+        return "LIVE"
 
     @property
     def active_model(self) -> str:
@@ -91,5 +118,11 @@ def get_settings() -> Settings:
 
 
 def reset_settings_cache() -> None:
-    """Test helper: clear the settings cache so env var changes take effect."""
+    """Test helper: clear the settings cache and cached SDK clients."""
     get_settings.cache_clear()
+    try:  # avoid circular import at module load
+        from app.services import analyzer_factory
+
+        analyzer_factory.reset_client_cache()
+    except ImportError:  # pragma: no cover
+        pass

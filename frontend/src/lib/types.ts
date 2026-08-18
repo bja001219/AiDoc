@@ -6,7 +6,8 @@ export type Provider = "gemini" | "openai";
 
 export interface HealthResponse {
   status: string;
-  mode: Mode;
+  mode: Mode;              // effective — what will actually serve
+  configured_mode: Mode;   // what MOCK_MODE was set to
   provider: Provider;
   model: string;
 }

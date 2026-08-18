@@ -1,10 +1,11 @@
-import type { Provider } from "../lib/types";
+import type { Mode, Provider } from "../lib/types";
 
 type ModeBadge = "MOCK" | "LIVE" | "UNKNOWN";
 
 interface HeaderProps {
   mode: ModeBadge;
   provider?: Provider | null;
+  configuredMode?: Mode | null;
 }
 
 const modeStyles: Record<ModeBadge, string> = {
@@ -18,13 +19,20 @@ const providerLabel: Record<Provider, string> = {
   openai: "OpenAI",
 };
 
-function badgeText(mode: ModeBadge, provider?: Provider | null): string {
+function badgeText(
+  mode: ModeBadge,
+  provider?: Provider | null,
+  configuredMode?: Mode | null,
+): string {
   if (mode === "UNKNOWN") return "checking...";
   if (mode === "LIVE" && provider) return `LIVE · ${providerLabel[provider]}`;
+  // Effective mode is MOCK but the operator asked for LIVE — usually a
+  // missing key. Surface that as a badge so the reviewer isn't misled.
+  if (mode === "MOCK" && configuredMode === "LIVE") return "MOCK (fallback)";
   return mode;
 }
 
-export default function Header({ mode, provider }: HeaderProps) {
+export default function Header({ mode, provider, configuredMode }: HeaderProps) {
   return (
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
@@ -40,7 +48,7 @@ export default function Header({ mode, provider }: HeaderProps) {
           className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider ${modeStyles[mode]}`}
           data-testid="mode-badge"
         >
-          {badgeText(mode, provider)}
+          {badgeText(mode, provider, configuredMode)}
         </span>
       </div>
     </header>

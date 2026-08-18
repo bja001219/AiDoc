@@ -26,6 +26,7 @@ def _reset_settings(monkeypatch):
     reset_settings_cache()
     yield
     monkeypatch.delenv("MOCK_MODE", raising=False)
+    monkeypatch.delenv("MAX_PDF_BYTES", raising=False)
     reset_settings_cache()
 
 
@@ -96,3 +97,21 @@ def test_analyze_rejects_bad_company_json(client):
     )
     assert response.status_code == 400
     assert response.json()["error"]["code"] == "INVALID_REQUEST"
+
+
+def test_analyze_rejects_oversized_upload(monkeypatch):
+    """[H-3] Body must be rejected while streaming, not after full buffer."""
+    monkeypatch.setenv("MOCK_MODE", "true")
+    monkeypatch.setenv("MAX_PDF_BYTES", "2048")  # 2 KiB
+    reset_settings_cache()
+
+    fresh_client = TestClient(create_app())
+    # Craft a PDF that is comfortably larger than 2 KiB.
+    pdf_bytes = _make_pdf(["padding chunk " * 200 for _ in range(6)])
+    assert len(pdf_bytes) > 2048, "fixture PDF must exceed the test limit"
+    files = {"file": ("big.pdf", pdf_bytes, "application/pdf")}
+
+    response = fresh_client.post("/api/analyze", files=files)
+
+    assert response.status_code == 413
+    assert response.json()["error"]["code"] == "PDF_TOO_LARGE"

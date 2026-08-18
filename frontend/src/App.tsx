@@ -23,6 +23,7 @@ export default function App() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<ModeUiState>("UNKNOWN");
+  const [configuredMode, setConfiguredMode] = useState<Mode | null>(null);
   const [provider, setProvider] = useState<Provider | null>(null);
 
   useEffect(() => {
@@ -31,11 +32,13 @@ export default function App() {
       .then((h) => {
         if (cancelled) return;
         setMode(h.mode);
+        setConfiguredMode(h.configured_mode);
         setProvider(h.provider);
       })
       .catch(() => {
         if (!cancelled) {
           setMode("UNKNOWN");
+          setConfiguredMode(null);
           setProvider(null);
         }
       });
@@ -67,7 +70,7 @@ export default function App() {
 
   return (
     <div className="min-h-full flex flex-col">
-      <Header mode={mode} provider={provider} />
+      <Header mode={mode} provider={provider} configuredMode={configuredMode} />
       <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-6 py-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
