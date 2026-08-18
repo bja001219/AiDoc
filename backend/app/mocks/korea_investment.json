@@ -1,0 +1,224 @@
+{
+  "mode": "MOCK",
+  "project_overview": {
+    "project_name": "한국투자공사 내부 인공지능 플랫폼 및 인프라 구축",
+    "agency": "한국투자공사 (Korea Investment Corporation)",
+    "purpose": "내부 지식/문서 활용 효율을 높이기 위해 생성형 AI 기반 지식 검색 및 문서 분석 플랫폼을 구축하고, 이를 지원하는 컴퓨팅 인프라를 함께 도입한다.",
+    "period": "계약체결일로부터 6개월",
+    "budget": "1,250,000,000원 (VAT 포함)",
+    "bidding_method": "협상에 의한 계약",
+    "contract_method": "총액 확정",
+    "evidence": { "page": 3, "quote": "사업기간 6개월, 사업예산 1,250백만원" }
+  },
+  "requirements": [
+    {
+      "id": "SFR-001",
+      "category": "기능",
+      "title": "생성형 AI 기반 지식 검색 서비스 구축",
+      "description": "내부 문서(정책, 리서치, 매뉴얼)를 대상으로 자연어 질의응답과 근거 문서 링크를 제공하는 지식 검색 서비스를 구축한다.",
+      "importance": "High",
+      "evidence": { "page": 5, "quote": "생성형 AI 기반 지식 검색 서비스" }
+    },
+    {
+      "id": "SFR-002",
+      "category": "기능",
+      "title": "문서 요약 및 자동 태깅",
+      "description": "업로드된 리서치 문서에 대해 요약, 키워드 추출, 자동 태깅 기능을 제공한다.",
+      "importance": "High",
+      "evidence": { "page": 6, "quote": "문서 요약 및 자동 태깅 기능" }
+    },
+    {
+      "id": "SFR-003",
+      "category": "기능",
+      "title": "관리자 콘솔",
+      "description": "임베딩 인덱스 관리, 사용 로그 조회, 접근 권한 관리를 수행하는 웹 기반 관리자 콘솔을 제공한다.",
+      "importance": "Medium",
+      "evidence": { "page": 8 }
+    },
+    {
+      "id": "SPR-001",
+      "category": "성능",
+      "title": "질의 응답 응답시간",
+      "description": "일반 질의에 대해 5초 이내에 응답을 반환해야 한다.",
+      "importance": "Medium",
+      "evidence": { "page": 12, "quote": "질의응답 응답시간 5초 이내" }
+    },
+    {
+      "id": "SER-001",
+      "category": "보안",
+      "title": "내부 정보 외부 전송 금지",
+      "description": "모든 문서 및 임베딩은 내부 인프라에서만 처리되어야 하며, 외부 API로 원문을 전송할 수 없다.",
+      "importance": "High",
+      "evidence": { "page": 30, "quote": "내부정보 외부 반출 금지" }
+    },
+    {
+      "id": "SER-002",
+      "category": "보안",
+      "title": "접근 통제 및 감사 로그",
+      "description": "부서/직급 기반 접근 통제와 질의/응답 감사 로그를 6개월 이상 보관해야 한다.",
+      "importance": "High",
+      "evidence": { "page": 31 }
+    },
+    {
+      "id": "INR-001",
+      "category": "인프라",
+      "title": "온프레미스 GPU 서버",
+      "description": "임베딩 및 추론을 위한 온프레미스 GPU 서버를 공급/설치한다.",
+      "importance": "High",
+      "evidence": { "page": 20 }
+    }
+  ],
+  "eligibility": [
+    {
+      "title": "소프트웨어 사업자 신고",
+      "detail": "소프트웨어산업진흥법에 따른 소프트웨어사업자 신고 필",
+      "evidence": { "page": 41 }
+    },
+    {
+      "title": "정보보호 관리체계 관련 실적",
+      "detail": "최근 3년 이내 공공/금융 부문 정보시스템 구축 실적 보유",
+      "evidence": { "page": 42 }
+    },
+    {
+      "title": "직접생산확인증명서",
+      "detail": "해당 시 소프트웨어 직접생산 확인서 제출",
+      "evidence": { "page": 43 }
+    }
+  ],
+  "evaluation": [
+    {
+      "name": "기술 평가",
+      "weight": "90점",
+      "detail": "사업 이해도, 수행 방안, 기술력, 프로젝트 관리, 지원 방안 등",
+      "evidence": { "page": 55 }
+    },
+    {
+      "name": "가격 평가",
+      "weight": "10점",
+      "detail": "입찰 금액 기준 정량 평가",
+      "evidence": { "page": 55 }
+    },
+    {
+      "name": "수행 방안 - 생성형 AI 아키텍처",
+      "weight": "20점",
+      "detail": "RAG 파이프라인, 임베딩 전략, 프롬프트 관리 방안"
+    },
+    {
+      "name": "수행 방안 - 보안 및 데이터 거버넌스",
+      "weight": "15점",
+      "detail": "내부 데이터 격리, 접근 통제, 감사 로그"
+    }
+  ],
+  "required_documents": [
+    { "name": "입찰참가신청서" },
+    { "name": "사업자등록증 사본" },
+    { "name": "소프트웨어사업자 신고 확인서" },
+    { "name": "기술제안서" },
+    { "name": "가격제안서" },
+    { "name": "수행실적 확인서" },
+    { "name": "보안서약서" },
+    { "name": "청렴계약이행서약서" }
+  ],
+  "risks": [
+    {
+      "category": "technical",
+      "title": "온프레미스 GPU 인프라 조달 리스크",
+      "description": "GPU 서버 납기와 성능 사양이 프로젝트 일정과 성능 요구사항에 직접 영향을 준다.",
+      "evidence": { "page": 20 }
+    },
+    {
+      "category": "security",
+      "title": "외부 LLM API 사용 제한",
+      "description": "내부 정보 외부 반출 금지 조건이 있어 상용 LLM API 사용이 제한되며, 온프레미스 LLM 또는 프라이빗 배포가 필요하다.",
+      "evidence": { "page": 30 }
+    },
+    {
+      "category": "schedule",
+      "title": "6개월 내 구축/안정화 일정",
+      "description": "요구 범위 대비 6개월은 촉박하며 요건 확정 지연 시 리스크가 커진다.",
+      "evidence": { "page": 3 }
+    },
+    {
+      "category": "business",
+      "title": "공공/금융 실적 요구",
+      "description": "최근 3년 공공/금융 실적 요구 조건이 있어 실적이 없는 경우 컨소시엄 구성이 필요할 수 있다.",
+      "evidence": { "page": 42 }
+    }
+  ],
+  "company_fit": {
+    "strengths": [
+      "React + FastAPI 기반 웹 서비스 개발 역량 보유 (SFR-001, SFR-003)",
+      "LLM API 및 RAG 파이프라인 개발 경험 (SFR-001)",
+      "문서 요약/태깅 관련 기존 내부 지식 검색 시스템 구축 경험 (SFR-002)"
+    ],
+    "gaps": [
+      "최근 3년 공공/금융 부문 구축 실적 없음",
+      "정보보호 관련 공식 인증 미보유"
+    ],
+    "unknowns": [
+      "온프레미스 GPU 인프라 공급 파트너 필요 여부",
+      "PM 경력 조건(예: PMP 등) 명시 여부 재확인 필요"
+    ]
+  },
+  "bid_decision": {
+    "decision": "CONDITIONAL_GO",
+    "score": 72,
+    "strengths": [
+      "핵심 기술 요구사항(RAG, 문서 검색, 관리자 콘솔) 충족 가능",
+      "6개월 일정 내 MVP 수준 구현이 가능한 팀 구성"
+    ],
+    "risks": [
+      "공공/금융 실적 요구 조건 미충족 가능성",
+      "온프레미스 GPU 인프라 공급 파트너 확보 필요"
+    ],
+    "rationale": "기술 요구사항은 우리 역량과 대체로 부합하나, 공공/금융 실적과 온프레미스 인프라 공급이 확보되어야 참여가 안정적이다."
+  },
+  "proposal_strategy": [
+    {
+      "title": "내부 지식 검색 정확도를 핵심 차별점으로 제시",
+      "description": "문서 청크 전략, 재순위 파이프라인, 근거 링크 UX를 기술제안서 전면에 배치한다."
+    },
+    {
+      "title": "온프레미스 RAG 아키텍처로 보안 요구 정면 대응",
+      "description": "내부 정보 외부 반출 금지 요건을 프라이빗 LLM/임베딩 조합으로 해결하는 참조 아키텍처를 제시한다."
+    },
+    {
+      "title": "단계적 구축·검증 로드맵",
+      "description": "PoC → 파일럿 → 전사 적용 3단계로 6개월 일정 리스크를 완화한다."
+    },
+    {
+      "title": "데이터 거버넌스 및 접근 통제 프레임워크",
+      "description": "부서/직급 기반 권한 모델과 감사 로그를 데이터 거버넌스 관점에서 표준화한다."
+    },
+    {
+      "title": "인프라 공급 컨소시엄 구성",
+      "description": "GPU 서버 공급 및 공공 실적 보완을 위한 파트너사와 컨소시엄을 제안한다."
+    }
+  ],
+  "proposal_outline": [
+    {
+      "section": "1. 제안 개요",
+      "points": ["사업 이해", "추진 목표", "핵심 성공 요인"]
+    },
+    {
+      "section": "2. 사업 수행 전략",
+      "points": ["생성형 AI 활용 전략", "RAG 파이프라인 설계", "온프레미스 배포 전략"]
+    },
+    {
+      "section": "3. 시스템 구성",
+      "points": ["전체 아키텍처", "AI 플랫폼", "데이터 파이프라인", "관리자 콘솔"]
+    },
+    {
+      "section": "4. 프로젝트 관리",
+      "points": ["일정 및 마일스톤", "인력 구성", "위험 관리"]
+    },
+    {
+      "section": "5. 보안 및 품질 관리",
+      "points": ["보안 아키텍처", "접근 통제", "감사 및 품질 검증"]
+    },
+    {
+      "section": "6. 운영 및 지원",
+      "points": ["유지보수 방안", "지원 체계", "인수인계"]
+    }
+  ]
+}
