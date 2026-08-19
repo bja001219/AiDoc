@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import io
+import logging
 from dataclasses import dataclass
 
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 
 from app.models.errors import EmptyPDFTextError, InvalidPDFError
+
+logger = logging.getLogger(__name__)
 
 MIN_TOTAL_CHARS = 200
 
@@ -37,7 +40,15 @@ def extract_pages(pdf_bytes: bytes) -> list[PageText]:
     for index, page in enumerate(reader.pages, start=1):
         try:
             text = page.extract_text() or ""
-        except Exception:
+        except Exception as exc:  # noqa: BLE001 — pypdf raises assorted types
+            # [M-5] never swallow silently — an operator needs to know which
+            # page failed if extraction quality regresses.
+            logger.warning(
+                "pypdf failed to extract text from page %d: %s: %s",
+                index,
+                type(exc).__name__,
+                exc,
+            )
             text = ""
         pages.append(PageText(page=index, text=text.strip()))
 

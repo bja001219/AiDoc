@@ -14,6 +14,11 @@ from app.services.prompts import SYSTEM_PROMPT, build_user_prompt
 MAX_PROMPT_CHARS = 60_000
 
 
+def _is_timeout_error(exc: BaseException) -> bool:
+    name = type(exc).__name__.lower()
+    return "timeout" in name or "timeout" in str(exc).lower()
+
+
 class GeminiAnalyzer:
     """Analyzer that calls Google's Gemini API via google-genai."""
 
@@ -40,7 +45,12 @@ class GeminiAnalyzer:
                     "temperature": 0.2,
                 },
             )
-        except Exception as exc:  # network / rate limit / auth
+        except Exception as exc:  # network / rate limit / auth / timeout
+            if _is_timeout_error(exc):
+                raise AnalysisFailedError(
+                    "Gemini 응답이 시간 안에 도착하지 않았습니다. "
+                    "잠시 후 다시 시도해 주세요.",
+                ) from exc
             raise AnalysisFailedError(f"Gemini 호출 실패: {exc}") from exc
 
         content = _extract_text(response)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import CompanyProfileCard from "./components/CompanyProfileCard";
 import UploadCard from "./components/UploadCard";
@@ -26,36 +26,50 @@ export default function App() {
   const [configuredMode, setConfiguredMode] = useState<Mode | null>(null);
   const [provider, setProvider] = useState<Provider | null>(null);
 
+  // Cancel an in-flight analyze when the user unmounts or starts a new one.
+  const analyzeAbortRef = useRef<AbortController | null>(null);
+
   useEffect(() => {
-    let cancelled = false;
-    fetchHealth()
+    // [M-7] abort the health poll if App unmounts before it resolves.
+    const controller = new AbortController();
+    fetchHealth({ signal: controller.signal })
       .then((h) => {
-        if (cancelled) return;
+        if (controller.signal.aborted) return;
         setMode(h.mode);
         setConfiguredMode(h.configured_mode);
         setProvider(h.provider);
       })
-      .catch(() => {
-        if (!cancelled) {
-          setMode("UNKNOWN");
-          setConfiguredMode(null);
-          setProvider(null);
-        }
+      .catch((err) => {
+        if (controller.signal.aborted) return;
+        if (err instanceof Error && err.name === "AbortError") return;
+        setMode("UNKNOWN");
+        setConfiguredMode(null);
+        setProvider(null);
       });
-    return () => {
-      cancelled = true;
-    };
+    return () => controller.abort();
+  }, []);
+
+  // Cancel any in-flight analyze when the whole app unmounts.
+  useEffect(() => {
+    return () => analyzeAbortRef.current?.abort();
   }, []);
 
   async function handleAnalyze() {
     if (!file || isAnalyzing) return;
+    // If the user clicks Analyze twice, drop the older request.
+    analyzeAbortRef.current?.abort();
+    const controller = new AbortController();
+    analyzeAbortRef.current = controller;
+
     setIsAnalyzing(true);
     setError(null);
     setResult(null);
     try {
-      const res = await analyzeRfp(file, profile);
+      const res = await analyzeRfp(file, profile, { signal: controller.signal });
+      if (controller.signal.aborted) return;
       setResult(res);
     } catch (err) {
+      if (controller.signal.aborted) return;
       if (err instanceof RfpApiError) {
         setError(`[${err.code}] ${err.message}`);
       } else if (err instanceof Error) {
@@ -64,6 +78,9 @@ export default function App() {
         setError("알 수 없는 오류가 발생했습니다.");
       }
     } finally {
+      if (analyzeAbortRef.current === controller) {
+        analyzeAbortRef.current = null;
+      }
       setIsAnalyzing(false);
     }
   }

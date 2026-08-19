@@ -9,6 +9,11 @@ from app.services.mock_analyzer import MockAnalyzer
 
 logger = logging.getLogger(__name__)
 
+# Total request-response budget for a live LLM call. Bumped high enough to
+# absorb a slow Gemini answer on a large RFP; short enough that a hung
+# request doesn't wedge the process forever.
+LIVE_TIMEOUT_SECONDS = 90
+
 _MOCK_ANALYZER = MockAnalyzer()
 _gemini_client_cache: dict[str, Any] = {}
 _openai_client_cache: dict[str, Any] = {}
@@ -33,7 +38,12 @@ def _get_gemini_client(api_key: str) -> Any | None:
             "falling back to MockAnalyzer.",
         )
         return None
-    client = genai.Client(api_key=api_key)
+    # http_options timeout is in milliseconds. Passing as a dict keeps us off
+    # google.genai.types imports; the SDK normalises it internally.
+    client = genai.Client(
+        api_key=api_key,
+        http_options={"timeout": LIVE_TIMEOUT_SECONDS * 1000},
+    )
     _gemini_client_cache[api_key] = client
     return client
 
@@ -49,7 +59,9 @@ def _get_openai_client(api_key: str) -> Any | None:
             "falling back to MockAnalyzer.",
         )
         return None
-    client = OpenAI(api_key=api_key)
+    # OpenAI SDK takes seconds (float) at client init; propagates as httpx
+    # timeout on every request.
+    client = OpenAI(api_key=api_key, timeout=float(LIVE_TIMEOUT_SECONDS))
     _openai_client_cache[api_key] = client
     return client
 
